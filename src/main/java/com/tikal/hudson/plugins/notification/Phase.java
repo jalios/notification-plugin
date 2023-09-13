@@ -115,7 +115,12 @@ public enum Phase {
         	if (result.equals(Result.FAILURE)) {return true;}
             return previousRunResult != null && result.equals(Result.SUCCESS)
                 && previousRunResult.equals(Result.FAILURE);
-            case "manual":
+        case "unstableOrfailedAndFirstSuccess":
+        	if (result == null || !this.equals(FINALIZED)) {return false;}
+        	if (result.equals(Result.FAILURE) || result.equals(Result.UNSTABLE)) {return true;}
+            return previousRunResult != null && result.equals(Result.SUCCESS)
+                && (previousRunResult.equals(Result.FAILURE) || result.equals(Result.UNSTABLE));
+        case "manual":
           return false;
         default:
         	return event.equals(this.toString().toLowerCase());
